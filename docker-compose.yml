@@ -1,0 +1,22 @@
+version: '3.4'
+
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: ./nginx/Dockerfile
+    container_name: nginx
+
+  mariadb:
+    build:
+      context: .
+      dockerfile: ./mariaDB/Dockerfile
+    container_name: mariadb
+
+  wordpress:
+    build:
+      context: .
+      dockerfile: ./wordpress/Dockerfile
+    container_name: wordpress
+
+
