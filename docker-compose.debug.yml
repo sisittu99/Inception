@@ -1,8 +1,0 @@
-version: '3.4'
-
-services:
-  42inception:
-    image: 42inception
-    build:
-      context: .
-      dockerfile: ./Dockerfile
