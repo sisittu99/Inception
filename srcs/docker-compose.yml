@@ -1,11 +1,33 @@
 version: '3.4'
 
+volumes:
+  wordpress:
+    name: wordpress
+    driver: local
+    driver_opt: #options:
+      device: /home/anovelli/data/wordpress #devices path (example, we have to create manually in the vm)
+      o: bind #enables a specific host path to be linked to the container volume path
+      type: none #empty volume that has no initial content.
+  mariadb:
+    name: mariadb
+    driver: local
+    driver_opt:
+      device: /home/anovelli/data/mariadb
+      o: bind
+      type: none
+
+networks:
+  inception:
+    name: inception
+
 services:
   nginx:
     build:
       context: .
       dockerfile: ./nginx/Dockerfile
-    container_name: nginx
+      container_name: nginx
+      networks:
+      - inception
 
   # mariadb:
   #   build:

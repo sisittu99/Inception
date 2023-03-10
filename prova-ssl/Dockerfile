@@ -1,7 +1,7 @@
 FROM nginx
 
-COPY ssl/localhost.crt /etc/nginx/ssl/
-COPY ssl/localhost.key /etc/nginx/ssl/
+COPY localhost.crt /etc/nginx/ssl/
+COPY localhost.key /etc/nginx/ssl/
 
 COPY index.html /usr/share/nginx/html/
 
