@@ -1,5 +1,8 @@
-FROM nginx:latest
+FROM debian:buster
 
-COPY index.html /usr/share/nginx/html
+RUN apt-get update && \
+    apt-get install -y nginx
 
 EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
