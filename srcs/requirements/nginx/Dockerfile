@@ -23,4 +23,4 @@ COPY conf/nginx.conf /etc/nginx
 
 EXPOSE 443
 
-CMD
+CMD ["nginx", "-g", "daemon off;", "-c", "/etc/nginx/nginx.conf"]
