@@ -1,10 +1,21 @@
-FROM nginx
+FROM debian:buster
 
-COPY localhost.crt /etc/nginx/ssl/
-COPY localhost.key /etc/nginx/ssl/
+RUN apt-get update && \
+    apt-get install -y nginx && \
+    apt-get install -y openssl 
 
-COPY index.html /usr/share/nginx/html/
+RUN mkdir /etc/nginx/ssl && \
+    openssl req -newkey rsa:2048 \
+        -days 365 \
+		-nodes \
+		-keyout /etc/nginx/ssl/inception.key \
+		-out /etc/nginx/ssl/inception.crt \
+		-sha256 -new -sha256 \
+		-subj "/C=IT/ST=Lazio/L=Rome/O=PDC/CN=alazzari"
+
+COPY index.html /var/www/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 443
 
-CMD ["nginx", "-g", "daemon off;", "-c", "/etc/nginx/nginx.conf"]
+CMD ["nginx", "-g", "daemon off;"]

@@ -61,3 +61,22 @@
     Ad esempio, se il tuo login è wil, wil.42.fr reindirizzerà all'indirizzo IP che punta al sito web di wil.
 
 11) È obbligatorio utilizzare le variabili d'ambiente. Inoltre, è fortemente consigliato utilizzare un file .env per archiviare le variabili d'ambiente.
+
+
+Comandi Docker:
+
+sudo apt install libnss3-tools -y --> Installazione libreria network service
+
+- Immagini attive: docker image ls
+- Cancellare definitivamente: docker image prune -a
+- Cancellare immagini: docker image rm -f $(docker images -q)
+- Cancellare containers: docker container rm -f $(docker ps -aq)
+- Costruire immagine: docker image build -t <nome-img> .
+- Nome containers attivi: docker container ps —format “{{.Names}}”
+- Attivare container: docker container run -d -p <porta>:<porta> <nome-cntr>
+
+- Controllare info container: docker container inspect https_server
+- Controllo containers: docker container logs <nome-cntr>
+- Controllo directory containers: docker container exec -it https_server mkdir -p /etc/nginx/certs
+- Stoppare e rimuovere vecchio container: docker  container stop <nome-cntr> && docker rm <nome-cntr>
+- Entrare e controllare esistenza delle cartelle/file: docker container exec -it <cntr-id> sh
