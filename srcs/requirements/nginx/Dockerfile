@@ -1,26 +1,22 @@
 FROM alpine:3.16
 
-RUN apk update && apk upgrade && apk add nginx openssl 
-RUN rm -f /etc/nginx/nginx.conf /etc/nginx/conf.d/default.conf
-#COPY content /usr/share/nginx/html
+RUN apk update && \
+    apk install -y nginx && \
+    apk install -y openssl 
 
-RUN cd /etc/nginx && mkdir -p ssl && touch /etc/nginx/ssl/inception.key && \
-	touch /etc/nginx/ssl/inception.csr && \
-		openssl req -newkey rsa:2048 \
+RUN mkdir /etc/nginx/ssl && \
+    openssl req -newkey rsa:2048 \
+        -x509 \
+        -days 365 \
 		-nodes \
-		# esplicita la non creazione di una passphrase per la chiave privata ("No Data Encrypt. Standard")
 		-keyout /etc/nginx/ssl/inception.key \
-		# chiave privata
-		-out /etc/nginx/ssl/inception.csr \
-		# richiesta della creazione del certificato. Serve in caso di richiesta da fare al Certificate Authority (CA). NGINX la usa.
+		-out /etc/nginx/ssl/inception.crt \
 		-sha256 -new -sha256 \
-		# protocolli supportati
-		-subj "/C=IT/ST=Lazio/L=Rome/O=PDC/CN=mcerchi"
+		-subj "/C=IT/ST=Lazio/L=Rome/O=PDC/CN=alazzari.42.fr"
 
-RUN mkdir -p /var/log/custom_logs/nginx && touch /var/log/custom_logs/nginx/access.log /var/log/custom_logs/nginx/error.log
-
-COPY conf/nginx.conf /etc/nginx
+COPY index.html /var/www/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 443
 
-CMD ["nginx", "-g", "daemon off;", "-c", "/etc/nginx/nginx.conf"]
+CMD ["nginx", "-g", "daemon off;"]
