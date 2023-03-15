@@ -14,3 +14,4 @@ RUN apk update && \
     curl -s -L https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar --output /usr/bin/wp && \
     chmod +x /usr/bin/wp && \
     wp core download --version=5.8.1 --path=/var/www/wordpress
+
