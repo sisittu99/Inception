@@ -36,7 +36,7 @@
 
 /* TODO LIST */
 
-1) Un container Docker che contiene NGINX con solo TLSv1.2 o TLSv1.3.
+V 1) Un container Docker che contiene NGINX con solo TLSv1.2 o TLSv1.3.
 
 2) Un container Docker che contiene WordPress + php-fpm (deve essere installato e configurato) solo senza nginx.
 
