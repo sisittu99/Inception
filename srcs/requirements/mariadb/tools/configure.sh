@@ -31,15 +31,16 @@ CREATE DATABASE $DATABASE_NAME DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_g
 CREATE USER '$DATABASE_ADMIN'@'%' IDENTIFIED BY '$DATABASE_ADMIN_PWD';
 GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO '$DATABASE_ADMIN'@'%';
 FLUSH PRIVILEGES;
-   
+EOF
 
     /usr/bin/mysqld --user=mysql --bootstrap < $tmp
     rm -f $tmp
+    
 fi
 
-sed -i 's/skip-networking/# skip-networking/g' /etc/my.cnf.d/mariadb-server.cnf
-sed -i "s/#bind-address=.*/bind-address=0.0.0.0/g" /etc/my.cnf.d/mariadb-server.cnf
+#sed -i 's/skip-networking/# skip-networking/g' /etc/my.cnf.d/mariadb-server.cnf
+#sed -i "s/#bind-address=.*/bind-address=0.0.0.0/g" /etc/my.cnf.d/mariadb-server.cnf
 
 echo "MariaDB starting"
-
-exec /usr/bin/mysqld --user=mysql --console
+#/usr/bin/mysqld
+exec mysqld --user=mysql --console
