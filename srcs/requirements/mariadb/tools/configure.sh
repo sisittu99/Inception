@@ -18,20 +18,20 @@ then
     fi
 
     cat << EOF > $tmp
-USE mysql; --usa il database sequel
-FLUSH PRIVILEGES; --update dei permessi sul database
-DELETE FROM mysql.user WHERE User=''; --cancella dalla tabella user lo user di default ''
-DROP DATABASE test; --cancella la tabella test
-DELETE FROM mysql.db WHERE Db='test'; --cancella dalla tabella db il database test
-DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1'); --cancella dalla tabella degli user il campo root quando l'indirizzo di provenienza non è il localhost
+USE mysql; #usa il database sequel
+FLUSH PRIVILEGES; #update dei permessi sul database
+DELETE FROM mysql.user WHERE User=''; #cancella dalla tabella user lo user di default ''
+DROP DATABASE test; #cancella la tabella test
+DELETE FROM mysql.db WHERE Db='test'; #cancella dalla tabella db il database test
+DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1'); #cancella dalla tabella degli user il campo root quando l'indirizzo di provenienza non è il localhost
 
-ALTER USER 'root'@'localhost' IDENTIFIED BY '$DB_ROOT_PWD'; --cambia password utente root da localhost
+ALTER USER 'root'@'localhost' IDENTIFIED BY '$DB_ROOT_PWD'; #cambia password utente root da localhost
 
 CREATE DATABASE $DATABASE_NAME DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
 CREATE USER '$DATABASE_ADMIN'@'%' IDENTIFIED BY '$DATABASE_ADMIN_PWD';
 GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO '$DATABASE_ADMIN'@'%';
 FLUSH PRIVILEGES;
-EOF
+   
 
     /usr/bin/mysqld --user=mysql --bootstrap < $tmp
     rm -f $tmp

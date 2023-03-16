@@ -1,8 +1,8 @@
-FROM alpine:3.16
+FROM debian:buster
 
-RUN apk update && \
-    apk install -y nginx && \
-    apk install -y openssl 
+RUN apt-get update && \
+    apt-get install -y nginx && \
+    apt-get install -y openssl 
 
 RUN mkdir /etc/nginx/ssl && \
     openssl req -newkey rsa:2048 \

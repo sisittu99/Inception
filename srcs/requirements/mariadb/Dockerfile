@@ -1,7 +1,7 @@
-FROM alpine:3.16
+FROM debian:buster
 
-RUN apk update
-RUN apk install -y mariadb-server
+RUN apt-get update
+RUN apt-get install -y mariadb-server
 
 # porta solita per MariaDB, non obbligatoria
 EXPOSE 3306 

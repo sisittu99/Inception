@@ -24,21 +24,25 @@ services:
   nginx:
     build:
       context: .
-      dockerfile: ./nginx/Dockerfile
       container_name: nginx
+      build: ./requirements/nginx
+      image: nginx:42
+      dockerfile: ./nginx/Dockerfile
     networks:
       - inception
 
-  # mariadb:
-  #   build:
-  #     context: .
-  #     dockerfile: ./mariaDB/Dockerfile
-  #   container_name: mariadb
+  mariadb:
+    build:
+      context: .
+      dockerfile: ./mariaDB/Dockerfile
+    container_name: mariadb
+    networks:
+      - inception
 
-  # wordpress:
-  #   build:
-  #     context: .
-  #     dockerfile: ./wordpress/Dockerfile
-  #   container_name: wordpress
-
-
+  wordpress:
+    build:
+      context: .
+      dockerfile: ./wordpress/Dockerfile
+    container_name: wordpress
+    networks:
+      - inception

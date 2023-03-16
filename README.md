@@ -38,9 +38,9 @@
 
 V 1) Un container Docker che contiene NGINX con solo TLSv1.2 o TLSv1.3.
 
-2) Un container Docker che contiene WordPress + php-fpm (deve essere installato e configurato) solo senza nginx.
+ 2) Un container Docker che contiene WordPress + php-fpm (deve essere installato e configurato) solo senza nginx.
 
-3) Un container Docker che contiene solo MariaDB senza nginx.
+V 3) Un container Docker che contiene solo MariaDB senza nginx.
 
 4) Un volume che contiene il database di WordPress.
     --> Volume: è una funzionalità che consente ai container di accedere e memorizzare dati al di fuori del sistema dei file del container stesso. Sono utili quando si vuole condividere i dati tra i container o persistere i dati generati da un container anche dopo la sua eliminazione.
