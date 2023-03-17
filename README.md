@@ -80,3 +80,46 @@ sudo apt install libnss3-tools -y --> Installazione libreria network service
 - Controllo directory containers: docker container exec -it https_server mkdir -p /etc/nginx/certs
 - Stoppare e rimuovere vecchio container: docker  container stop <nome-cntr> && docker rm <nome-cntr>
 - Entrare e controllare esistenza delle cartelle/file: docker container exec -it <cntr-id> sh
+
+
+MARIADB:
+
+MARIADB useful commands
+  mysql -uroot // To connect on mysql CLI
+  SELECT User FROM mysql.user; // To see all the users
+  USE wordpress // To connect on your wordpress database
+  mysqldump -u username -p databasename > filename.sql // To export the file
+  mysql -uroot -p$MYSQL_ROOT_PASSWORD $MYSQL_DATABASE < /usr/local/bin/wordpress.sql // To import the file
+  What are the steps to create your own Maria DB image
+  Create a dockerfile
+
+Download mariadb-server && mariadb-client
+To run mariaDB on your container, you have to copy your .sh and the .sql on the /var/local/bin/
+Give the right to execute your mysqld (which is the daemon for mysql)
+Launch your script to install mariaDB
+Then do a CMD to enable the database to listen to all the IPV4 adresses.
+Create a script (.sh file)
+
+mysql_install_db initializes the MySQL data directory and creates the system tables that it contains, if they do not exist
+In this script we downloaded Maria DB on the container, we have to install it and create the root user
+Then we launch the commandline to give all the privileges to the root user. The function GRANT from mysqlcli (sql command line) gives access (or all access) to a user.
+Create your file.sql
+
+2 options :
+You create the database, the user and you give all privileges to the user as malatini did
+You export your own wordpress.sql as I did (and Lea did !!!!)
+Step 1: Create your admin user on wordpress: You might don't know what it is, no prob! It means you will export your admin user from your database in order to put it in your .sql file.
+Go to your wordpress website (localhost:443) and create your user by using the same username and password as your .env file.
+Step 2: Export your admin user.sql You have to go on your mariaDB container and do the following command
+mysqldump -u 'username' -p 'databasename' > filename.sql it will export your user on the filename.sql, please change username, databasename by what you put in your .env file
+You have a file called filename.sql in your current directory
+"cat filename.sql" in your container and copy past to your .sql project.
+Your .sql is ready now to be imported
+Step 3: relaunch your docker-compose
+TADA you will be directly in your website by passing the phase of installation Wordpress without installation
+Commands to check if all is working
+	SHOW DATABASES; // show the databes
+	use 'wordpress'; // go in the wordpress databse
+	SHOW TABLES; // show all the tables from the database you selected
+	SELECT wp_users.display_name FROM wp_users; // display username from wordpress database
+	SELECT *  FROM wp_users; // select
