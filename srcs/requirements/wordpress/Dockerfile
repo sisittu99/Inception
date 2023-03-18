@@ -1,11 +1,52 @@
-FROM alpine:3.16
+# FROM alpine:3.16
+# 
+# RUN apk update && \
+#     apk add curl mariadb-client redis php7 php7-phar php7-json php7-curl php7-fpm php7-mysqli php7-iconv && \
+#     wget -O /usr/bin/dumb-init https://github.com/Yelp/dumb-init/releases/download/v1.2.5/dumb-init_1.2.5_x86_64 && \
+#     chmod +x /usr/bin/dumb-init && \
+#     mkdir -p /var/www/wordpress && \
+#     curl -s -L https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar --output /usr/bin/wp && \
+#     chmod +x /usr/bin/wp && \
+#     wp core download --version=5.8.1 --path=/var/www/wordpress
 
-RUN apk update && \
-    apk add curl mariadb-client redis php7 php7-phar php7-json php7-curl php7-fpm php7-mysqli php7-iconv && \
-    wget -O /usr/bin/dumb-init https://github.com/Yelp/dumb-init/releases/download/v1.2.5/dumb-init_1.2.5_x86_64 && \
-    chmod +x /usr/bin/dumb-init && \
-    mkdir -p /var/www/wordpress && \
-    curl -s -L https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar --output /usr/bin/wp && \
-    chmod +x /usr/bin/wp && \
-    wp core download --version=5.8.1 --path=/var/www/wordpress
+# Base image
+FROM debian:buster
 
+# Install required packages
+RUN apt-get update && apt-get install -y \
+    curl \
+    wget \
+    unzip \
+    php7.3-fpm \
+    php7.3-mysql \
+    php7.3-gd \
+    php7.3-curl \
+    php7.3-xml \
+    php7.3-mbstring \
+    php7.3-imagick \
+    php7.3-zip \
+    mariadb-client
+#   && rm -rf /var/lib/apt/lists/*    -> Elimina la cache delle installazioni
+
+# Install WordPress
+RUN curl -L -O https://wordpress.org/latest.tar.gz \
+    && tar xzvf latest.tar.gz \
+    && rm latest.tar.gz
+
+# Crea la cartella d'appoggio (cambiabile) 
+# e dà i permessi totali ai servizi web attraverso il gruppo e l'utente www-data.
+# La flag -R concede i permessi anche nelle sottocartelle e file.
+RUN mkdir -p /var/www/wordpress
+RUN chown -R www-data:www-data /var/www/wordpress
+
+# Set working directory
+WORKDIR /var/www/wordpress
+
+# Inserisce il file conf. per PHP-FPM nella cartella apposita
+COPY conf/www.conf /etc/php/7.3/fpm/pool.d/
+
+# Expose ports
+EXPOSE 9000
+
+# Start services
+CMD php-fpm
