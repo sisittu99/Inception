@@ -49,4 +49,4 @@ COPY conf/www.conf /etc/php/7.3/fpm/pool.d/
 EXPOSE 9000
 
 # Start services
-CMD php-fpm
+CMD ["php-fpm"]
