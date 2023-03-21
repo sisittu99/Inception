@@ -42,6 +42,11 @@ RUN chown -R www-data:www-data /var/www/wordpress
 # Set working directory
 WORKDIR /var/www/wordpress
 
+# Cartella dove vengono inserite automaticamente le info sul PID (/run/php/php7.3-fpm.pid). 
+# Necessita dei permessi.
+RUN mkdir -p /run/php \
+    && chown -R www-data:www-data /run/php
+
 # Inserisce il file conf. per PHP-FPM nella cartella apposita
 COPY conf/www.conf /etc/php/7.3/fpm/pool.d/
 
@@ -49,4 +54,4 @@ COPY conf/www.conf /etc/php/7.3/fpm/pool.d/
 EXPOSE 9000
 
 # Start services
-CMD ["php-fpm"]
+CMD ["php-fpm7.3"]

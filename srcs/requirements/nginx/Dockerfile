@@ -14,6 +14,8 @@ RUN mkdir /etc/nginx/ssl && \
 		-sha256 -new -sha256 \
 		-subj "/C=IT/ST=Lazio/L=Rome/O=PDC/CN=mcerchi.42.fr"
 
+RUN mkdir -p /var/log/custom_logs/nginx && touch error.log access.log
+
 COPY index.html /var/www/html
 COPY ./conf/nginx.conf /etc/nginx/conf.d/default.conf
 
