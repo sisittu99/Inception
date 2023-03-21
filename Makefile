@@ -1,6 +1,6 @@
 NAME=Inception
 
-all:	clean re
+all:	re
 
 stop:
 		@docker-compose -f ./srcs/docker-compose.yml down
@@ -13,7 +13,7 @@ fclean:	clean
 		@docker system prune -a
 
 re:	
-		@docker-compose up --build ./srcs/docker-compose.yml
+		@sudo sh srcs/Inception_prep.sh 
+		@docker-compose -f srcs/docker-compose.yml up --build 
 
 .PHONY:	all stop clean re
-

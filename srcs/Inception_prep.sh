@@ -4,6 +4,12 @@
 #source "./.env"
 #set +o allexport
 
+read -p "${GREEN}Do you want to ${PURPLE}Configure your host?${GREEN}:${YELLOW} [y/N]${RESET} " all
+if [ "$all" = 'N' ] || [ "$all" = 'n' ]
+then
+exit 0
+fi
+
 sudo apt-get update
 sudo apt-get upgrade -y
 sudo apt-get install	make \

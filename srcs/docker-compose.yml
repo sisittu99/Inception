@@ -23,7 +23,7 @@ services:
   nginx:
     container_name: nginx
     build: ./requirements/nginx/
-    image: nginx:42
+    image: nginx
     networks:
       - inception
     volumes:
@@ -39,8 +39,6 @@ services:
       - inception
     volumes:
       - wp_db:/var/lib/mysql
-    depends_on:
-      - mariadb
     restart: always
     
   wordpress:
@@ -49,5 +47,5 @@ services:
     networks:
       - inception
     volumes:
-      -wordpress:/var/www/html
+      - wp_files:/var/www/html
     restart: always
