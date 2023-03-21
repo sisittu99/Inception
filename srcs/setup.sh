@@ -223,5 +223,5 @@ then
 fi
 
 # mkdir /home/.docker
-/etc/host:
-127.0.0.1 www.alazzari.42.fr
+/etc/hosts:
+127.0.0.1 www.${USER_42}.42.fr
