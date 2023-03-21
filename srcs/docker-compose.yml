@@ -1,24 +1,23 @@
 version: '3.4'
 
 volumes:
-  wordpress:
-    name: wordpress
+  wp_files:
     driver: local
     driver_opts: #options:
-      device: /home/anovelli/data/wordpress #devices path (example, we have to create manually in the vm)
+      device: /home/${USER}/data/wp_files #devices path (example, we have to create manually in the vm)
       o: bind #enables a specific host path to be linked to the container volume path
       type: none #empty volume that has no initial content.
-  mariadb:
-    name: mariadb
+  
+  wp_db:
     driver: local
     driver_opts:
-      device: /home/anovelli/data/mariadb
+      device: /home/${USER}/data/wp_db
       o: bind
       type: none
 
 networks:
   inception:
-    name: inception
+    name: inception_nw
 
 services:
   nginx:
@@ -27,15 +26,28 @@ services:
     image: nginx:42
     networks:
       - inception
+    volumes:
+      - wp_files:/var/www/html
+    depends_on:
+      - wordpress
+    restart: always
 
   mariadb:
     build: ./requirements/mariadb/
     container_name: mariadb
     networks:
       - inception
-
+    volumes:
+      - wp_db:/var/lib/mysql
+    depends_on:
+      - mariadb
+    restart: always
+    
   wordpress:
     build: ./requirements/wordpress/
     container_name: wordpress
     networks:
       - inception
+    volumes:
+      -wordpress:/var/www/html
+    restart: always
