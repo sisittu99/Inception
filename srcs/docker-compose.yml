@@ -28,6 +28,8 @@ services:
       - inception
     volumes:
       - wp_files:/var/www/html
+    ports: 
+      - "443:443"
     depends_on:
       - wordpress
     restart: always
@@ -40,6 +42,8 @@ services:
     volumes:
       - wp_db:/var/lib/mysql
     restart: always
+    ports: 
+      - "3306:3306"
     environment:
       USER_42: ${USER_42}
       DOMAIN_NAME: ${DOMAIN_NAME}
@@ -56,6 +60,8 @@ services:
     volumes:
       - wp_files:/var/www/html
     restart: always
+    ports: 
+      - "9000:9000"
     environment:
       USER_42: ${USER_42}
       DOMAIN_NAME: ${DOMAIN_NAME}
