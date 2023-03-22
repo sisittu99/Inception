@@ -40,7 +40,14 @@ services:
     volumes:
       - wp_db:/var/lib/mysql
     restart: always
-    
+    environment:
+      USER_42: ${USER_42}
+      DOMAIN_NAME: ${DOMAIN_NAME}
+      DATABASE_NAME: ${DATABASE_NAME}
+      DB_ROOT_PWD: ${DB_ROOT_PWD}
+      DATABASE_ADMIN: ${DATABASE_ADMIN}
+      DATABASE_ADMIN_PWD: ${DATABASE_ADMIN_PWD}
+
   wordpress:
     build: ./requirements/wordpress/
     container_name: wordpress
@@ -49,3 +56,10 @@ services:
     volumes:
       - wp_files:/var/www/html
     restart: always
+    environment:
+      USER_42: ${USER_42}
+      DOMAIN_NAME: ${DOMAIN_NAME}
+      DATABASE_NAME: ${DATABASE_NAME}
+      DB_ROOT_PWD: ${DB_ROOT_PWD}
+      DATABASE_ADMIN: ${DATABASE_ADMIN}
+      DATABASE_ADMIN_PWD: ${DATABASE_ADMIN_PWD}

@@ -49,9 +49,9 @@ RUN mkdir -p /run/php \
 
 # Inserisce il file conf. per PHP-FPM nella cartella apposita
 COPY conf/www.conf /etc/php/7.3/fpm/pool.d/
-
+COPY ./tools/config.sh /var/www/wordpress/
 # Expose ports
 EXPOSE 9000
-
+ENTRYPOINT ["/var/www/wordpress/config.sh"]
 # Start services
 CMD ["php-fpm7.3"]
