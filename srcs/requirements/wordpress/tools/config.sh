@@ -2,7 +2,7 @@
 
 #wait for mariadb, then connect with credentials
 
-while ! mariadb -h$MYSQL_HOSTNAME -u$WP_DB_USER -p$WP_DB_PASSWORD $WP_DB_NAME &>/dev/null;
+while ! mariadb -h $MYSQL_HOSTNAME -u $WP_DB_USER -p $WP_DB_PASSWORD $WP_DB_NAME &>/dev/null;
 do
     sleep 3
 done

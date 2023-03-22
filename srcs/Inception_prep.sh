@@ -4,6 +4,13 @@
 #source "./.env"
 #set +o allexport
 
+#RED=`tput setaf 1`
+GREEN=`tput setaf 2`
+YELLOW=`tput setaf 3`
+PURPLE=`tput setaf 5`
+#BLUE=`tput setaf 6`
+RESET=`tput sgr0`
+
 read -p "${GREEN}Do you want to ${PURPLE}Configure your host?${GREEN}:${YELLOW} [y/N]${RESET} " all
 if [ "$all" = 'N' ] || [ "$all" = 'n' ]
 then
