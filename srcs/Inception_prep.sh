@@ -39,21 +39,21 @@ sudo apt-get install docker-compose docker-compose-plugin -y
 sudo apt-get update
 sudo rm -rf /var/lib/apt/lists/*
 
-if [ -d "/home/$USER/data" ]; then \
-	echo "/home/$USER/data already exists"; else \
-	mkdir /home/$USER/data; \
+if [ -d "/home/alazzari/data" ]; then \
+	echo "/home/alazzari/data already exists"; else \
+	mkdir /home/alazzari/data; \
 	echo "data directory created successfully"; \
 fi
 
-if [ -d "/home/$USER/data/wp_files" ]; then \
-	echo "/home/$USER/data/wp_files already exists"; else \
-	mkdir /home/$USER/data/wp_files; \
+if [ -d "/home/alazzari/data/wp_files" ]; then \
+	echo "/home/alazzari/data/wp_files already exists"; else \
+	mkdir /home/alazzari/data/wp_files; \
 	echo "wp_files directory created successfully"; \
 fi
 
-if [ -d "/home/$USER/data/wp_db" ]; then \
-	echo "/home/$USER/data/wp_db already exists"; else \
-	mkdir /home/$USER/data/wp_db; \
+if [ -d "/home/alazzari/data/wp_db" ]; then \
+	echo "/home/alazzari/data/wp_db already exists"; else \
+	mkdir /home/alazzari/data/wp_db; \
 	echo "wp_db directory created successfully"; \
 fi
 

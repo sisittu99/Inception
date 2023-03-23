@@ -8,6 +8,7 @@ fi
 
 if [ ! -d "/var/lib/mysql/$DATABASE_NAME" ]
 then
+    rm -rf /var/lib/mysql/*
     chown -R mysql:mysql /var/lib/mysql
     mysql_install_db --basedir=/usr --datadir=/var/lib/mysql --user=mysql --rpm > /dev/null
     tmp=mktemp
@@ -35,12 +36,16 @@ EOF
 
     /usr/bin/mysqld --user=mysql --bootstrap < $tmp
     rm -f $tmp
+    systemctl start mysql.servie
+    systemctl start mariadb
     
 fi
 
-#sed -i 's/skip-networking/# skip-networking/g' /etc/my.cnf.d/mariadb-server.cnf
-#sed -i "s/#bind-address=.*/bind-address=0.0.0.0/g" /etc/my.cnf.d/mariadb-server.cnf
+sed -i 's/skip-networking/# skip-networking/g' /etc/my.cnf.d/mariadb-server.cnf
+sed -i "s/#bind-address=.*/bind-address=0.0.0.0/g" /etc/my.cnf.d/mariadb-server.cnf
 
 echo "MariaDB starting"
 #/usr/bin/mysqld
 exec mysqld --user=mysql --console
+exec systemctl start mysql.service
+exec systemctl start mariadb
