@@ -4,14 +4,14 @@ volumes:
   wp_files:
     driver: local
     driver_opts: #options:
-      device: /home/${USER}/data/wp_files #devices path (example, we have to create manually in the vm)
+      device: /home/alazzari/data/wp_files #devices path (example, we have to create manually in the vm)
       o: bind #enables a specific host path to be linked to the container volume path
       type: none #empty volume that has no initial content.
   
   wp_db:
     driver: local
     driver_opts:
-      device: /home/${USER}/data/wp_db
+      device: /home/alazzari/data/wp_db
       o: bind
       type: none
 
@@ -45,12 +45,16 @@ services:
     ports: 
       - "3306:3306"
     environment:
-      USER_42: ${USER_42}
-      DOMAIN_NAME: ${DOMAIN_NAME}
-      DATABASE_NAME: ${DATABASE_NAME}
-      DB_ROOT_PWD: ${DB_ROOT_PWD}
-      DATABASE_ADMIN: ${DATABASE_ADMIN}
-      DATABASE_ADMIN_PWD: ${DATABASE_ADMIN_PWD}
+      WP_DB_NAME:        ${WP_DB_NAME}
+      WP_DB_USER:        ${WP_DB_USER}
+      WP_DB_PASSWORD:    ${WP_DB_PASSWORD}
+      DOMAIN_NAME:       ${DOMAIN_NAME}
+      WP_ADMIN_USER:     ${WP_ADMIN_USER}
+      WP_ADMIN_PASSWORD: ${WP_ADMIN_PASSWORD}
+      WP_ADMIN_EMAIL:    ${WP_ADMIN_EMAIL}
+      WP_USER:           ${WP_USER}
+      WP_PASSWORD:       ${WP_PASSWORD}
+      WP_EMAIL:          ${WP_EMAIL}
 
   wordpress:
     build: ./requirements/wordpress/
@@ -63,10 +67,13 @@ services:
     ports: 
       - "9000:9000"
     environment:
-      USER_42: ${USER_42}
-      DOMAIN_NAME: ${DOMAIN_NAME}
-      DATABASE_NAME: ${DATABASE_NAME}
-      DB_ROOT_PWD: ${DB_ROOT_PWD}
-      DATABASE_ADMIN: ${DATABASE_ADMIN}
-      DATABASE_ADMIN_PWD: ${DATABASE_ADMIN_PWD}
-      WP_ADMIN_EMAIL: ${WP_ADMIN_EMAIL}
+      WP_DB_NAME:        ${WP_DB_NAME}
+      WP_DB_USER:        ${WP_DB_USER}
+      WP_DB_PASSWORD:    ${WP_DB_PASSWORD}
+      DOMAIN_NAME:       ${DOMAIN_NAME}
+      WP_ADMIN_USER:     ${WP_ADMIN_USER}
+      WP_ADMIN_PASSWORD: ${WP_ADMIN_PASSWORD}
+      WP_ADMIN_EMAIL:    ${WP_ADMIN_EMAIL}
+      WP_USER:           ${WP_USER}
+      WP_PASSWORD:       ${WP_PASSWORD}
+      WP_EMAIL:          ${WP_EMAIL}
