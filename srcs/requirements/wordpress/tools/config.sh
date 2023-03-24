@@ -3,7 +3,7 @@
 #wait for mariadb, then connect with credentials
 
 ##
-while ! mariadb --host=$DATABASE_HOST --user=$DATABASE_ADMIN --password=$DATABASE_ADMIN_PWD $DATABASE_NAME &>/dev/null;
+while ! mariadb --host=$WP_DB_NAME --user=$WP_DB_USER --password=$WP_DB_PASSWORD $WP_DB_NAME &>/dev/null;
 do
     sleep 3
 done
@@ -18,10 +18,10 @@ then
 
 	## variabili
 	wp core download --allow-root
-	wp config create --dbname=$DATABASE_NAME --dbuser=$DATABASE_ADMIN --dbpass=$DATABASE_ADMIN_PWD --dbhost=$DATABASE_HOST --dbcharset="utf8" --dbcollate="utf8_general_ci" --allow-root
+	wp config create --dbname=$WP_DB_NAME --dbuser=$WP_DB_USER --dbpass=$WP_DB_PASSWORD --dbhost=$MYSQL_HOSTNAME --dbcharset="utf8" --dbcollate="utf8_general_ci" --allow-root
 	wp db create --allow-root
-	wp core install --url=$DOMAIN_NAME --title="Inception" --admin_user=$DATABASE_ADMIN --admin_password=$DATABASE_ADMIN_PWD --admin_email=$WP_ADMIN_EMAIL --skip-email --allow-root
-	wp user create $USER_42 $WP_ADMIN_EMAIL --role=author --user_pass=$DATABASE_ADMIN_PWD --allow-root
+	wp core install --url=$DOMAIN_NAME --title="Inception" --admin_user=$WP_ADMIN_USER --admin_password=$WP_ADMIN_PASSWORD --admin_email=$WP_ADMIN_EMAIL --skip-email --allow-root
+	wp user create $WP_USER $WP_EMAIL --role=author --user_pass=$WP_PASSWORD --allow-root
 	wp theme activate twentytwentythree --allow-root
     
 fi

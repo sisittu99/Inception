@@ -37,10 +37,6 @@ EOF
 
     /usr/bin/mysqld --user=mysql --bootstrap < $tmp
     rm -f $tmp
-    #
-    systemctl start mysql.service
-    #
-    systemctl start mariadb
     
 fi
 
@@ -50,7 +46,4 @@ sed -i "s/#bind-address=.*/bind-address=0.0.0.0/g" /etc/my.cnf.d/mariadb-server.
 echo "MariaDB starting"
 #/usr/bin/mysqld
 exec mysqld --user=mysql --console
-#
-exec systemctl start mysql.service
-#
-exec systemctl start mariadb
+
