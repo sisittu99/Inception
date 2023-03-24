@@ -5,7 +5,7 @@ echo "mariadb $(getent hosts mariadb | awk '{ print $1 }')" >> /etc/hosts
 #wait for mariadb, then connect with credentials
 
 ##
-while ! mysql -h$MYSQL_HOSTNAME -u$WP_DB_USER -p$WP_DB_PASSWORD $WP_DB_NAME &>/dev/null;
+while ! mysql -h $MYSQL_HOSTNAME -u $WP_DB_USER -p $WP_DB_PASSWORD $WP_DB_NAME &>/dev/null;
 do
     sleep 3
 done
