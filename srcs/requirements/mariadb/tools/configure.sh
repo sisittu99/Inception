@@ -6,15 +6,13 @@ then
     chown -R mysql:mysql /run/mysqld
 fi
 
-if [ ! -d "/var/lib/mysql/$DATABASE_NAME" ]
+if [ ! -d "/var/lib/mysql/mysql" ]
 then
-    #
-    rm -rf /var/lib/mysql/*
     chown -R mysql:mysql /var/lib/mysql
-    #
-    chown -R mysql: /var/run/mysqld
+    
     mysql_install_db --basedir=/usr --datadir=/var/lib/mysql --user=mysql --rpm > /dev/null
-    tmp=mktemp
+    
+    tmp='mktemp'
 
     if [ ! -f "$tmp" ]
     then
@@ -24,7 +22,7 @@ then
     cat << EOF > $tmp
 USE mysql; #usa il database sequel
 FLUSH PRIVILEGES; #update dei permessi sul database
-DELETE FROM mysql.user WHERE User=''; #cancella dalla tabella user lo user di default ''
+DELETE FROM mysql.user WHERE User='root'; #cancella dalla tabella user lo user di default ''
 DROP DATABASE test; #cancella la tabella test
 DELETE FROM mysql.db WHERE Db='test'; #cancella dalla tabella db il database test
 DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1'); #cancella dalla tabella degli user il campo root quando l'indirizzo di provenienza non è il localhost
@@ -32,7 +30,7 @@ DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.
 ALTER USER 'root'@'localhost' IDENTIFIED BY '$DB_ROOT_PWD'; #cambia password utente root da localhost
 
 CREATE DATABASE $DATABASE_NAME DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
-CREATE USER '$DATABASE_ADMIN'@'%' IDENTIFIED BY '$DATABASE_ADMIN_PWD';
+CREATE USER $DATABASE_ADMIN'@'%' IDENTIFIED BY '$DATABASE_ADMIN_PWD';
 GRANT ALL PRIVILEGES ON $DATABASE_NAME.* TO '$DATABASE_ADMIN'@'%';
 FLUSH PRIVILEGES;
 EOF
