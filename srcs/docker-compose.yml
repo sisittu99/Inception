@@ -1,12 +1,12 @@
-version: '3.4'
+version: '3.1'
 
 volumes:
   wp_files:
     driver: local
-    driver_opts: #options:
-      device: /home/alazzari/data/wp_files #devices path (example, we have to create manually in the vm)
-      o: bind #enables a specific host path to be linked to the container volume path
-      type: none #empty volume that has no initial content.
+    driver_opts:
+      device: /home/alazzari/data/wp_files
+      o: bind
+      type: none
   
   wp_db:
     driver: local
@@ -18,6 +18,7 @@ volumes:
 networks:
   inception:
     name: inception_nw
+    driver: bridge
 
 services:
   nginx:
@@ -66,7 +67,10 @@ services:
     restart: always
     ports: 
       - "9000:9000"
+    depends_on:
+      - mariadb
     environment:
+      WP_DB_HOST:        mariadb # Update the database host to 'mariadb'
       WP_DB_NAME:        ${WP_DB_NAME}
       WP_DB_USER:        ${WP_DB_USER}
       WP_DB_PASSWORD:    ${WP_DB_PASSWORD}

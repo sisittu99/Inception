@@ -12,7 +12,7 @@ RUN mkdir /etc/nginx/ssl && \
 		-keyout /etc/nginx/ssl/inception.key \
 		-out /etc/nginx/ssl/inception.crt \
 		-sha256 -new -sha256 \
-		-subj "/C=IT/ST=Lazio/L=Rome/O=PDC/CN=${USER_42}.42.fr"
+		-subj "/C=IT/ST=Lazio/L=Rome/O=PDC/CN=alazzari.42.fr"
 
 RUN mkdir -p /var/log/custom_logs/nginx && touch error.log access.log
 

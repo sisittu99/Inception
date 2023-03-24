@@ -11,7 +11,7 @@ LABEL version="1.0"
 LABEL description="MariaDB Server"
 
 COPY tools/configure.sh /tmp
-
+# RUN mkdir /etc/my
 # HEALTHCHECK controlla la validità del db ogni 5 minuti. Si fa perché il db potrebbe essere compromesso
 # o semplicemente non disponibile per altre chiamate. In caso di successo torna 0, altrimenti 1.
 HEALTHCHECK --start-period=5m \

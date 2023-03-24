@@ -58,7 +58,7 @@ if [ -d "/home/alazzari/data/wp_db" ]; then \
 fi
 
 ## Check if $USER.42.fr is set as localhost in the host
-#if [ `cat /etc/hosts | grep $(USER_42).42.fr | wc -l` -eq 0 ] 
+#if [ `cat /etc/hosts | grep alazzari.42.fr | wc -l` -eq 0 ] 
 #then 
-#	echo "$(USER_42).42.fr		127.0.0.1" | sudo tee -a /etc/hosts
+#	echo "alazzari.42.fr		127.0.0.1" | sudo tee -a /etc/hosts
 #fi
