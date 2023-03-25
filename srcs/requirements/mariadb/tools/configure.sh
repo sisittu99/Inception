@@ -13,22 +13,19 @@ then
     mysql_install_db --basedir=/usr --datadir=/var/lib/mysql --user=mysql --rpm > /dev/null
     
     tmp='mktemp'
-
     if [ ! -f "$tmp" ]
     then
         return 1
     fi
 
     cat << EOF > $tmp
-USE mysql; #usa il database sequel
-FLUSH PRIVILEGES; #update dei permessi sul database
-DELETE FROM mysql.user WHERE User='root'; #cancella dalla tabella user lo user di default ''
-DROP DATABASE test; #cancella la tabella test
-DELETE FROM mysql.db WHERE Db='test'; #cancella dalla tabella db il database test
-DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1'); #cancella dalla tabella degli user il campo root quando l'indirizzo di provenienza non è il localhost
-
-ALTER USER 'root'@'localhost' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD'; #cambia password utente root da localhost
-
+USE mysql;
+FLUSH PRIVILEGES;
+DELETE FROM mysql.user WHERE User='';
+DROP DATABASE test;
+DELETE FROM mysql.db WHERE Db='test';
+DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
+ALTER USER 'root'@'localhost' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD';
 CREATE DATABASE $WP_DB_NAME DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
 CREATE USER $WP_DB_USER'@'%' IDENTIFIED BY '$WP_DB_PASSWORD';
 GRANT ALL PRIVILEGES ON $WP_DB_NAME.* TO '$WP_DB_USER'@'%';
@@ -43,10 +40,10 @@ EOF
     
 fi
 
-sed -i 's/skip-networking/# skip-networking/g' /etc/mysql/conf.d/mysql.cnf
-sed -i "s/#bind-address=.*/bind-address=0.0.0.0/g" /etc/mysql/conf.d/mysql.cnf
+sed -i 's/skip-networking/# skip-networking/g' /etc/my.cnf.d/mariadb-server.cnf
+sed -i "s/#bind-address=.*/bind-address=0.0.0.0/g" /etc/my.cnf.d/mariadb-server.cnf
 
-echo "MariaDB starting"
+echo "MariaDB starting: OK"
 #/usr/bin/mysqld
-exec mysqld --user=mysql --console
+exec /usr/bin/mysqld --user=mysql --console
 

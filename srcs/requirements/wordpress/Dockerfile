@@ -27,6 +27,7 @@ RUN apt-get update && apt-get install -y \
     php7.3-zip \
     mariadb-client
 #   && rm -rf /var/lib/apt/lists/*    -> Elimina la cache delle installazioni
+RUN apt-get clean
 
 # Install WordPress
 RUN curl -L -O https://wordpress.org/latest.tar.gz \
@@ -36,22 +37,28 @@ RUN curl -L -O https://wordpress.org/latest.tar.gz \
 # Crea la cartella d'appoggio (cambiabile) 
 # e dà i permessi totali ai servizi web attraverso il gruppo e l'utente www-data.
 # La flag -R concede i permessi anche nelle sottocartelle e file.
-RUN mkdir -p /var/www/wordpress
-RUN chown -R www-data:www-data /var/www/wordpress
+RUN mkdir -p /var/www/html/wordpress
+RUN chown -R www-data:www-data /var/www/html/wordpress
+
+COPY conf/index.html /tmp/index.html
 
 # Set working directory
-WORKDIR /var/www/wordpress
+WORKDIR /var/www/html/wordpress
 
 # Cartella dove vengono inserite automaticamente le info sul PID (/run/php/php7.3-fpm.pid). 
 # Necessita dei permessi.
 RUN mkdir -p /run/php \
     && chown -R www-data:www-data /run/php
 
+
 # Inserisce il file conf. per PHP-FPM nella cartella apposita
-COPY conf/www.conf /etc/php/7.3/fpm/pool.d/
-COPY ./tools/config.sh /var/www/wordpress/
+COPY conf/php-fpm.conf /etc/php7/php-fpm.conf
+COPY conf/www.conf /etc/php/7.3/fpm/pool.d/www.conf
+
+COPY /tools/config.sh /var/www/html/wordpress/
+
 # Expose ports
 EXPOSE 9000
-ENTRYPOINT ["/var/www/wordpress/config.sh"]
+ENTRYPOINT ["/var/www/html/wordpress/config.sh"]
 # Start services
 CMD ["php-fpm7.3"]

@@ -5,17 +5,16 @@ echo "mariadb $(getent hosts mariadb | awk '{ print $1 }')" >> /etc/hosts
 #wait for mariadb, then connect with credentials
 
 ##
-while ! mysql -h $MYSQL_HOSTNAME -u $WP_DB_USER -p$WP_DB_PASSWORD -e "connect $WP_DB_NAME" &>/dev/null;
+while ! mariadb -h $MYSQL_HOSTNAME -u $WP_DB_USER -p$WP_DB_PASSWORD -e "connect $WP_DB_NAME" &>/dev/null;
 do
     sleep 3
 done
 
-chown -R mysql: /var/run/mysqld
+#chown -R mysql: /var/run/mysqld
 
 if [ ! -f "/var/www/html/wordpress/index.php" ];
 then
 
-	#
 	mv /tmp/index.html /var/www/html/wordpress/index.html
 
 	## variabili
