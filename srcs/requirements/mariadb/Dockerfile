@@ -2,6 +2,7 @@ FROM debian:buster
 
 RUN apt-get update
 RUN apt-get install -y mariadb-server
+RUN apt-get clean
 
 # porta solita per MariaDB, non obbligatoria
 EXPOSE 3306 
