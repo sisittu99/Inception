@@ -70,7 +70,7 @@ services:
     depends_on:
       - mariadb
     environment:
-      WP_DB_HOST:        mariadb # Update the database host to 'mariadb'
+      MYSQL_HOSTNAME:    mariadb # Update the database host to 'mariadb'
       WP_DB_NAME:        ${WP_DB_NAME}
       WP_DB_USER:        ${WP_DB_USER}
       WP_DB_PASSWORD:    ${WP_DB_PASSWORD}
