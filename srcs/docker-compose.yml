@@ -1,83 +1,80 @@
 version: '3.1'
 
-volumes:
-  wp_files:
-    driver: local
-    driver_opts:
-      device: /home/alazzari/data/wp_files
-      o: bind
-      type: none
-  
-  wp_db:
-    driver: local
-    driver_opts:
-      device: /home/alazzari/data/wp_db
-      o: bind
-      type: none
+services:
+  nginx:
+    build: requirements/nginx/
+    image: nginx
+    container_name: nginx
+    ports: 
+      - "443:443"
+    volumes:
+      - wp_files:/var/www/html
+    depends_on:
+      - wordpress
+    networks:
+      - inception
+    restart: always
+
+  wordpress:
+    build: requirements/wordpress/
+    image: wordpress
+    container_name: wordpress
+    ports: 
+      - "9000:9000"
+    volumes:
+      - wp_files:/var/www/html
+    depends_on:
+      - mariadb
+    environment:
+      MYSQL_HOSTNAME:    ${MYSQL_HOSTNAME}
+      WP_DB_NAME:        ${WP_DB_NAME}
+      WP_DB_USER:        ${WP_DB_USER}
+      WP_DB_PASSWORD:    ${WP_DB_PASSWORD}
+      DOMAIN_NAME:       ${DOMAIN_NAME}
+      WP_ADMIN_USER:     ${WP_ADMIN_USER}
+      WP_ADMIN_PASSWORD: ${WP_ADMIN_PASSWORD}
+      WP_ADMIN_EMAIL:    ${WP_ADMIN_EMAIL}
+      WP_USER:           ${WP_USER}
+      WP_PASSWORD:       ${WP_PASSWORD}
+      WP_EMAIL:          ${WP_EMAIL}
+    networks:
+      - inception
+    restart: always
+
+  mariadb:
+    build: requirements/mariadb/
+    image: mariadb
+    container_name: mariadb
+    ports: 
+      - "3306:3306"
+    volumes:
+      - wp_db:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD:  ${MYSQL_ROOT_PASSWORD}
+      WP_DB_NAME:           ${WP_DB_NAME}
+      WP_DB_USER:           ${WP_DB_USER}
+      WP_DB_PASSWORD:       ${WP_DB_PASSWORD}
+    networks:
+      - inception
+    restart: always
 
 networks:
   inception:
     name: inception_nw
-    driver: bridge
 
-services:
-  nginx:
-    container_name: nginx
-    build: ./requirements/nginx/
-    image: nginx
-    networks:
-      - inception
-    volumes:
-      - wp_files:/var/www/html
-    ports: 
-      - "443:443"
-    depends_on:
-      - wordpress
-    restart: always
+volumes:
+  wp_db:
+    driver: local
+    name: wp_db
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/alazzari/data/wp_db
 
-  mariadb:
-    build: ./requirements/mariadb/
-    container_name: mariadb
-    networks:
-      - inception
-    volumes:
-      - wp_db:/var/lib/mysql
-    restart: always
-    ports: 
-      - "3306:3306"
-    environment:
-      WP_DB_NAME:        ${WP_DB_NAME}
-      WP_DB_USER:        ${WP_DB_USER}
-      WP_DB_PASSWORD:    ${WP_DB_PASSWORD}
-      DOMAIN_NAME:       ${DOMAIN_NAME}
-      WP_ADMIN_USER:     ${WP_ADMIN_USER}
-      WP_ADMIN_PASSWORD: ${WP_ADMIN_PASSWORD}
-      WP_ADMIN_EMAIL:    ${WP_ADMIN_EMAIL}
-      WP_USER:           ${WP_USER}
-      WP_PASSWORD:       ${WP_PASSWORD}
-      WP_EMAIL:          ${WP_EMAIL}
-
-  wordpress:
-    build: ./requirements/wordpress/
-    container_name: wordpress
-    networks:
-      - inception
-    volumes:
-      - wp_files:/var/www/html
-    restart: always
-    ports: 
-      - "9000:9000"
-    depends_on:
-      - mariadb
-    environment:
-      MYSQL_HOSTNAME:    mariadb # Update the database host to 'mariadb'
-      WP_DB_NAME:        ${WP_DB_NAME}
-      WP_DB_USER:        ${WP_DB_USER}
-      WP_DB_PASSWORD:    ${WP_DB_PASSWORD}
-      DOMAIN_NAME:       ${DOMAIN_NAME}
-      WP_ADMIN_USER:     ${WP_ADMIN_USER}
-      WP_ADMIN_PASSWORD: ${WP_ADMIN_PASSWORD}
-      WP_ADMIN_EMAIL:    ${WP_ADMIN_EMAIL}
-      WP_USER:           ${WP_USER}
-      WP_PASSWORD:       ${WP_PASSWORD}
-      WP_EMAIL:          ${WP_EMAIL}
+  wp_files:
+    driver: local
+    name: wp_files
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/alazzari/data/wp_files
