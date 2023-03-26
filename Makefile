@@ -7,6 +7,7 @@ stop:
 
 clean:	stop
 		@ docker-compose -f srcs/docker-compose.yml down --volume --rmi all
+		
 
 fclean:	clean
 		@ docker system prune -a -f
