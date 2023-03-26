@@ -1,23 +1,17 @@
 #!/bin/sh
 
-echo "mariadb $(getent hosts mariadb | awk '{ print $1 }')" >> /etc/hosts
-
 #wait for mariadb, then connect with credentials
 
-##
-while ! mariadb -h $MYSQL_HOSTNAME -u $WP_DB_USER -p$WP_DB_PASSWORD -e "connect $WP_DB_NAME" &>/dev/null;
+while ! mariadb -h $MYSQL_HOSTNAME -u $WP_DB_USER -p$WP_DB_PASSWORD $WP_DB_NAME &>/dev/null;
 do
     sleep 3
 done
-
-#chown -R mysql: /var/run/mysqld
 
 if [ ! -f "/var/www/html/wordpress/index.php" ];
 then
 
 	mv /tmp/index.html /var/www/html/wordpress/index.html
 
-	## variabili
 	wp core download --allow-root
 	wp config create --dbname=$WP_DB_NAME --dbuser=$WP_DB_USER --dbpass=$WP_DB_PASSWORD --dbhost=$MYSQL_HOSTNAME --dbcharset="utf8" --dbcollate="utf8_general_ci" --allow-root
 	wp db create --allow-root

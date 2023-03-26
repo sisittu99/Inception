@@ -1,6 +1,6 @@
-version: '3.1'
-
+version: '3'
 services:
+
   nginx:
     build: requirements/nginx/
     image: nginx
@@ -63,6 +63,7 @@ networks:
     name: inception_nw
 
 volumes:
+
   wp_db:
     driver: local
     name: wp_db

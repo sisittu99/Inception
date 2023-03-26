@@ -1,64 +1,72 @@
-# FROM alpine:3.16
-# 
-# RUN apk update && \
-#     apk add curl mariadb-client redis php7 php7-phar php7-json php7-curl php7-fpm php7-mysqli php7-iconv && \
-#     wget -O /usr/bin/dumb-init https://github.com/Yelp/dumb-init/releases/download/v1.2.5/dumb-init_1.2.5_x86_64 && \
-#     chmod +x /usr/bin/dumb-init && \
-#     mkdir -p /var/www/wordpress && \
-#     curl -s -L https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar --output /usr/bin/wp && \
-#     chmod +x /usr/bin/wp && \
-#     wp core download --version=5.8.1 --path=/var/www/wordpress
+FROM	alpine:3.13
 
-# Base image
-FROM debian:buster
+RUN		apk update && apk upgrade && \
+		apk add --no-cache \
+		wget \
+		tar \
+		mariadb-client \
+		redis \
+		php7 \
+		php7-fpm \
+		php7-bcmath \
+		php7-bz2 \
+		php7-calendar \
+		php7-ctype \
+		php7-curl \
+		php7-dom \
+		php7-exif \
+		php7-fileinfo \
+		php7-gd \
+		php7-gmagick \
+		php7-gmp \
+		php7-iconv \
+		php7-imap \
+		php7-intl \
+		php7-json \
+		php7-mbstring \
+		php7-mcrypt \
+		php7-memcache \
+		php7-mysqli \
+		php7-mysqlnd \
+		php7-openssl \
+		php7-pcntl \
+		php7-pdo \
+		php7-pdo_mysql \
+		php7-pdo_pgsql \
+		php7-pdo_sqlite \
+		php7-pgsql \
+		php7-phar \
+		php7-posix \
+		php7-session \
+		php7-shmop \
+		php7-simplexml \
+		php7-soap \
+		php7-sockets \
+		php7-sodium \
+		php7-sqlite3 \
+		php7-sysvsem \
+		php7-sysvshm \
+		php7-tokenizer \
+		php7-xml \
+		php7-xmlreader \
+		php7-xmlwriter \
+		php7-xsl \
+		php7-zip \
+		php7-zlib
 
-# Install required packages
-RUN apt-get update && apt-get install -y \
-    curl \
-    wget \
-    unzip \
-    php7.3-fpm \
-    php7.3-mysql \
-    php7.3-gd \
-    php7.3-curl \
-    php7.3-xml \
-    php7.3-mbstring \
-    php7.3-imagick \
-    php7.3-zip \
-    mariadb-client
-#   && rm -rf /var/lib/apt/lists/*    -> Elimina la cache delle installazioni
-RUN apt-get clean
+RUN		adduser -S nginx && addgroup -S nginx
 
-# Install WordPress
-RUN curl -L -O https://wordpress.org/latest.tar.gz \
-    && tar xzvf latest.tar.gz \
-    && rm latest.tar.gz
+COPY	conf/php-fpm.conf /etc/php7/php-fmp.conf
+COPY	conf/www.conf	/etc/php7/php-fpm.d/www.conf
 
-# Crea la cartella d'appoggio (cambiabile) 
-# e dà i permessi totali ai servizi web attraverso il gruppo e l'utente www-data.
-# La flag -R concede i permessi anche nelle sottocartelle e file.
-RUN mkdir -p /var/www/html/wordpress
-RUN chown -R www-data:www-data /var/www/html/wordpress
+COPY	conf/index.html /tmp/index.html
 
-COPY conf/index.html /tmp/index.html
+RUN		wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
+		chmod +x wp-cli.phar && \
+		mv wp-cli.phar /usr/local/bin/wp
 
-# Set working directory
-WORKDIR /var/www/html/wordpress
+WORKDIR	/var/www/html/wordpress
 
-# Cartella dove vengono inserite automaticamente le info sul PID (/run/php/php7.3-fpm.pid). 
-# Necessita dei permessi.
-RUN mkdir -p /run/php \
-    && chown -R www-data:www-data /run/php
+COPY	tools/configure.sh /tmp/configure.sh
 
-
-# Inserisce il file conf. per PHP-FPM nella cartella apposita
-COPY conf/php-fpm.conf /etc/php7/php-fpm.conf
-COPY conf/www.conf /etc/php/7.3/fpm/pool.d/www.conf
-
-COPY /tools/config.sh /var/www/html/wordpress/
-
-# Expose ports
-EXPOSE 9000
-ENTRYPOINT ["/var/www/html/wordpress/config.sh"]
-# Start services
-CMD ["php-fpm7.3"]
+ENTRYPOINT	[ "sh", "/tmp/configure.sh" ]

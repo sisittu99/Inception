@@ -17,8 +17,8 @@ then
     then
         return 1
     fi
-
     cat << EOF > $tmp
+
 USE mysql;
 FLUSH PRIVILEGES;
 DELETE FROM mysql.user WHERE User='';
@@ -31,19 +31,13 @@ CREATE USER $WP_DB_USER'@'%' IDENTIFIED BY '$WP_DB_PASSWORD';
 GRANT ALL PRIVILEGES ON $WP_DB_NAME.* TO '$WP_DB_USER'@'%';
 FLUSH PRIVILEGES;
 EOF
-
-# IF NOT EXISTS $WP_DB_NAME
-# IF NOT EXISTS $WP_DB_ADMIN IDENTIFIED BY $WP_DB_PASSWORD
-
     /usr/bin/mysqld --user=mysql --bootstrap < $tmp
-    rm -f $tmp
-    
+    rm -f $tmp 
 fi
 
-sed -i 's/skip-networking/# skip-networking/g' /etc/my.cnf.d/mariadb-server.cnf
+sed -i "s/skip-networking/# skip-networking/g" /etc/my.cnf.d/mariadb-server.cnf
 sed -i "s/#bind-address=.*/bind-address=0.0.0.0/g" /etc/my.cnf.d/mariadb-server.cnf
 
 echo "MariaDB starting: OK"
-#/usr/bin/mysqld
-exec /usr/bin/mysqld --user=mysql --console
 
+exec /usr/bin/mysqld --user=mysql --console

@@ -12,7 +12,7 @@ fclean:	clean
 		@ docker system prune -a -f
 
 re:
-		@ sh srcs/Inception_prep.sh
+		@ sh srcs/requirements/tools/configure.sh
 		@ docker-compose -f srcs/docker-compose.yml up --build
 
-.PHONY:	all stop clean re
+.PHONY:	all stop clean fclean re
