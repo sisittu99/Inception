@@ -2,8 +2,15 @@
 
 #wait for mariadb, then connect with credentials
 
-while ! mariadb -h $MYSQL_HOSTNAME -u $WP_DB_USER -p$WP_DB_PASSWORD $WP_DB_NAME &>/dev/null;
-do
+start=$(date +%s)
+
+while ! mariadb -h $MYSQL_HOSTNAME -u $WP_DB_USER -p$WP_DB_PASSWORD $WP_DB_NAME &>/dev/null; do
+    now=$(date +%s)
+    elapsed=$((now-start))
+    if [[ $elapsed -gt 30 ]]; then
+        echo "Timeout scaduto dopo 30 secondi."
+        exit 1
+    fi
     sleep 3
 done
 
@@ -18,7 +25,7 @@ then
 	wp core install --url=$DOMAIN_NAME --title="Inception" --admin_user=$WP_ADMIN_USER --admin_password=$WP_ADMIN_PASSWORD --admin_email=$WP_ADMIN_EMAIL --skip-email --allow-root
 	wp user create $WP_USER $WP_EMAIL --role=author --user_pass=$WP_PASSWORD --allow-root
 	wp theme activate twentytwentythree --allow-root
-    
+
 fi
 
 echo "WORDPRESS START STATUS : OK"
