@@ -58,7 +58,6 @@ RUN		adduser -S nginx && addgroup -S nginx
 
 COPY	conf/php-fpm.conf /etc/php7/php-fmp.conf
 COPY	conf/www.conf	/etc/php7/php-fpm.d/www.conf
-COPY 	conf/wp-config.php /etc/wp-config.php
 
 COPY	conf/index.html /tmp/index.html
 

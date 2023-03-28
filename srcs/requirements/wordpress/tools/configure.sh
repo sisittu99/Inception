@@ -2,16 +2,10 @@
 
 #wait for mariadb, then connect with credentials
 
-start=$(date +%s)
-
-while ! mariadb -h $MYSQL_HOSTNAME -u $WP_DB_USER -p$WP_DB_PASSWORD $WP_DB_NAME &>/dev/null; do
-    now=$(date +%s)
-    elapsed=$((now-start))
-    if [[ $elapsed -gt 30 ]]; then
-        echo "Timeout scaduto dopo 30 secondi."
-        exit 1
-    fi
+while ! mariadb -h$MYSQL_HOSTNAME -u$WP_DB_USER -p$WP_DB_PASSWORD $WP_DB_NAME &>/dev/null;
+do
     sleep 3
+    echo "dio porco"
 done
 
 if [ ! -f "/var/www/html/wordpress/index.php" ];

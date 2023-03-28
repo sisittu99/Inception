@@ -10,9 +10,10 @@ clean:	stop
 		
 
 fclean:	clean
+		@ sudo rm -rf /home/alazzari/data
 		@ docker system prune -a -f
 
-re:
+re:		fclean
 		@ sh srcs/requirements/tools/configure.sh
 		@ docker-compose -f srcs/docker-compose.yml up --build
 

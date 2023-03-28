@@ -15,7 +15,7 @@ RUN     openssl req -newkey rsa:2048 \
         -nodes \
         -keyout /etc/nginx/ssl/inception.key \
         -out /etc/nginx/ssl/inception.pem \
-        -subj "/C=IT/ST=Italy/L=Rome/O=42Rome/OU=alazzari"
+        -subj "/C=IT/ST=Italy/L=Rome/O=42Rome/OU=alazzari/CN=alazzari"
 
 COPY    conf/nginx.conf /etc/nginx/conf.d/default.conf
 
