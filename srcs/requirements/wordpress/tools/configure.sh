@@ -5,7 +5,11 @@
 while ! mariadb -h$MYSQL_HOSTNAME -u$WP_DB_USER -p$WP_DB_PASSWORD $WP_DB_NAME &>/dev/null;
 do
     sleep 3
-    echo "dio porco"
+    echo "waiting..."
+	echo "Host: $MYSQL_HOSTNAME\n\
+			User: $WP_DB_USER\n\
+			Pwd: $WP_DB_PASSWORD\n\
+			Name: $WP_DB_NAME\n " 
 done
 
 if [ ! -f "/var/www/html/wordpress/index.php" ];
