@@ -60,7 +60,7 @@ services:
 
 networks:
   inception:
-    name: inception_nw
+    name: inception
 
 volumes:
 
