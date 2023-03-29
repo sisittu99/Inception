@@ -1,6 +1,10 @@
 NAME=Inception
 
-all:	re
+all:	
+	@ docker-compose -f srcs/docker-compose.yml up -d
+
+down:
+	@ docker-compose -f srcs/docker-compose.yml down
 
 stop:
 		@ docker-compose -f srcs/docker-compose.yml stop
@@ -13,7 +17,7 @@ fclean:	clean
 		@ sudo rm -rf /home/$USER/data
 		@ docker system prune -a -f
 
-re:		fclean
+re:		fclean all
 		@ sh srcs/requirements/tools/configure.sh
 		@ docker-compose -f srcs/docker-compose.yml up --build
 
