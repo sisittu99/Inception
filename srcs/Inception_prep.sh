@@ -39,26 +39,26 @@ sudo apt-get install docker-compose docker-compose-plugin -y
 sudo apt-get update
 sudo rm -rf /var/lib/apt/lists/*
 
-if [ -d "/home/alazzari/data" ]; then \
-	echo "/home/alazzari/data already exists"; else \
-	mkdir /home/alazzari/data; \
+if [ -d "/home/$USER/data" ]; then \
+	echo "/home/$USER/data already exists"; else \
+	mkdir /home/$USER/data; \
 	echo "data directory created successfully"; \
 fi
 
-if [ -d "/home/alazzari/data/wp_files" ]; then \
-	echo "/home/alazzari/data/wp_files already exists"; else \
-	mkdir /home/alazzari/data/wp_files; \
+if [ -d "/home/$USER/data/wp_files" ]; then \
+	echo "/home/$USER/data/wp_files already exists"; else \
+	mkdir /home/$USER/data/wp_files; \
 	echo "wp_files directory created successfully"; \
 fi
 
-if [ -d "/home/alazzari/data/wp_db" ]; then \
-	echo "/home/alazzari/data/wp_db already exists"; else \
-	mkdir /home/alazzari/data/wp_db; \
+if [ -d "/home/$USER/data/wp_db" ]; then \
+	echo "/home/$USER/data/wp_db already exists"; else \
+	mkdir /home/$USER/data/wp_db; \
 	echo "wp_db directory created successfully"; \
 fi
 
 ## Check if $USER.42.fr is set as localhost in the host
-#if [ `cat /etc/hosts | grep alazzari.42.fr | wc -l` -eq 0 ] 
+#if [ `cat /etc/hosts | grep $USER.42.fr | wc -l` -eq 0 ] 
 #then 
-#	echo "alazzari.42.fr		127.0.0.1" | sudo tee -a /etc/hosts
+#	echo "$USER.42.fr		127.0.0.1" | sudo tee -a /etc/hosts
 #fi

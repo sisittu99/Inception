@@ -224,4 +224,4 @@ fi
 
 # mkdir /home/.docker
 /etc/hosts:
-127.0.0.1 www.alazzari.42.fr
+127.0.0.1 www.$USER.42.fr

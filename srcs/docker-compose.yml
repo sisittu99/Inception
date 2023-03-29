@@ -70,7 +70,7 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: /home/alazzari/data/wp_db
+      device: /home/$USER/data/wp_db
 
   wp_files:
     driver: local
@@ -78,4 +78,4 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: /home/alazzari/data/wp_files
+      device: /home/$USER/data/wp_files

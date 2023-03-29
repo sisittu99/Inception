@@ -10,7 +10,7 @@ clean:	stop
 		
 
 fclean:	clean
-		@ sudo rm -rf /home/alazzari/data
+		@ sudo rm -rf /home/$USER/data
 		@ docker system prune -a -f
 
 re:		fclean
