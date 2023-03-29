@@ -54,7 +54,6 @@ RUN		apk update && apk upgrade && \
 		php7-zip \
 		php7-zlib
 
-RUN		adduser -S nginx && addgroup -S nginx
 
 COPY	conf/php-fpm.conf /etc/php7/php-fmp.conf
 COPY	conf/www.conf	/etc/php7/php-fpm.d/www.conf
